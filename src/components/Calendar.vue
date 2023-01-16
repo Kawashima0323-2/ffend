@@ -154,7 +154,6 @@
     },
     methods: {
       viewDay ({ date }) {
-        alert("aaa");
         this.focus = date
         this.$router.push("/station");
       },
