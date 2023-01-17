@@ -10,6 +10,7 @@ const state = {
 const mutations = {
     onchangeFrom(state, param) {
         state.stationListFrom = param.stationListFrom;
+        console.log(state.stationListFrom + "state");
     },
     logout(state) {
         state.isLogin = false;
@@ -36,9 +37,15 @@ const actions = {
                 var cnt = 0;
 
                 response.data.ResultSet.Point.forEach(element => {
-                    param.stationListFrom[cnt++] = element.Station.Name;
-                    console.log(param.stationListFrom)
+                    if (element.Station.Type == "train") {
+                        param.stationListFrom[cnt++] = element.Station.Name;
+                    }
                 });
+
+                console.log(param.from + "param");
+                //param.stationListFrom = response.data.ResultSet.Point;
+                console.log(param.stationListFrom + "sn");
+
                 commit("onchangeFrom", param)
             }.bind(this))
             .catch(function(error) {
