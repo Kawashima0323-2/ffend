@@ -7,7 +7,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     modules: {
-        station
+        st: station
     },
     state: {
         isLogin: false,
