@@ -1,9 +1,15 @@
 <template>
   <v-app>
     <v-card width="400px" class="mx-auto mt-5">
-      <v-card-title class="display-1"> ログイン </v-card-title>
+      <v-card-title class="display-1"> 新規会員登録 </v-card-title>
       <v-card-text>
         <v-form>
+          <v-text-field
+            width="40px"
+            prepend-icon="mdi-account-circle"
+            label="ユーザー名"
+            v-model="userName"
+          />
           <v-text-field
             width="40px"
             prepend-icon="mdi-mail"
@@ -19,7 +25,7 @@
             v-model="password"
           />
           <v-card-actions>
-            <v-btn class="info" v-on:click="login()">ログイン</v-btn>
+            <v-btn class="info" v-on:click="newMember()">登録</v-btn>
           </v-card-actions>
         </v-form>
       </v-card-text>
@@ -32,13 +38,15 @@ export default {
   name: "App",
   data: () => ({
     showPassword: false,
+    userName:"",
     mailAddress: "",
     password: "",
   }),
   methods: {
-    async login() {
+    async newMember() {
     
-       await this.$store.dispatch("login", {
+       await this.$store.dispatch("newMember", {
+        userName: this.userName,
         mailAddress: this.mailAddress,
         password: this.password,
       });

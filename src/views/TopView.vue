@@ -1,28 +1,23 @@
 <template>
-      <v-chip-group
-      center-active="ture"
-
-      >
-    <v-carousel
-    hide-delimiters
-    height="auto">
-      <v-carousel-item
-        v-for="(item,i) in items"
-        :key="i"
-        :src="item.src"
-      >
+  <v-card
+  class="mx-auto my-12"
+  max-width="374">
       <router-link to="/login">
       <v-chip
   close-icon="mdi-delete"
   color="red"
 >ログイン</v-chip>
 </router-link>
+<router-link to="/newMember">
+      <v-chip
+  close-icon="mdi-delete"
+  color="red"
+>新規会員登録</v-chip>
+</router-link>
+</v-card>
+</template>
 
-    </v-carousel-item>
-    </v-carousel>
-</v-chip-group>
-  </template>
-  <script>
+<script>
   export default {
     data () {
       return {

@@ -44,6 +44,7 @@
         <v-list-item
           v-for="item in items"
           :key="item.title"
+          @click="click(item.router)"
           link
         >
           <v-list-item-icon>
@@ -67,10 +68,10 @@
       drawer: false,
       group: null,
       items: [
-          { title: 'ホーム', icon: 'mdi-home' },
+          { title: 'ホーム', icon: 'mdi-home',router:"/calendar"},
           { title: 'カレンダー', icon: 'mdi-calendar' },
           { title: '乗車検索', icon: 'mdi-train' },
-          { title: '店検索', icon: 'mdi-store' },
+          { title: '店検索', icon: 'mdi-store' ,router:"/ShopSearch"},
           { title: '天気予報', icon: 'mdi-weather-partly-cloudy' }
         ],
         right: null,
@@ -81,5 +82,11 @@
         this.drawer = false
       },
     },
+    methods:{
+      click(val){
+        alert(val)
+        this.$router.push(val);
+      }
+    }
   }
 </script>

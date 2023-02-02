@@ -48,16 +48,7 @@
   </v-card>
 
 
-  <v-card width="400px" class="mx-auto mt-5" v-show="show" v-for="sl in stationListParam" :key="sl.cnt">
-    <v-card-title>
-      {{sl.departureTime}}⇒{{ sl.arrivalTime}}
-    </v-card-title>
-    <v-card-text>
-          <div class="font-weight-bold ml-8 mb-2">
-           {{sl.rideTime}}分{{ sl.fare }}円
-          </div>
-        </v-card-text>
-  </v-card>
+
   </v-app>
 </template>
 
@@ -65,7 +56,6 @@
 export default {
   name: "App",
   data: () => ({
-    show:false,
     from: null, //出発駅
     to: null, //到着駅
     stationList: [],
@@ -99,11 +89,12 @@ export default {
       },
     },
   methods: {
+    
     searchFare() {
     this.$store.dispatch("searchFare", {
       from: this.from,
       to: this.to,})
-      this.show=true;
+      this.$router.push("/TransferList");
       },
     
     },

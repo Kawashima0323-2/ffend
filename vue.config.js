@@ -1,6 +1,20 @@
 const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
-  transpileDependencies: [
-    'vuetify'
-  ]
-})
+        transpileDependencies: [
+            'vuetify'
+        ]
+    },
+
+)
+module.exports = {
+    configureWebpack: {
+        devServer: {
+            proxy: {
+                '/hotpepper': {
+                    target: 'http://webservice.recruit.co.jp',
+                }
+            }
+        }
+    },
+
+}
