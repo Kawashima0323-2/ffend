@@ -12,58 +12,89 @@
   <v-card 
   :loading="loading" 
   class="mx-auto my-12" 
-  max-width="374"
+
+  max-width="1200"
   v-for="shop in displayLists" :key="shop.cnt"
   v-on:click="click(shop)"
   >
-
-    <template>
-      <v-progress-linear
-        color="deep-purple"
-        height="10"
-        indeterminate
-        contain = true
-      ></v-progress-linear>
-    </template>
-  
+  <v-row>
+  <v-col cols="4">
     <v-img
-    max-width ="100%"
-      height=auto
+    max-width ="304"
+      height="358"
       v-bind:src="image_src(shop)"
     ></v-img>
-  
-    <v-card-title>{{shop.name}}</v-card-title>
-
+  </v-col>
+  <v-col cols="8">
+    <v-card-subtitle class="mb-0 pb-0 text-h5">{{ shop.genreName }}|{{ shop.stationName }}</v-card-subtitle>
+    <v-card-title class="blue--text text-sm-h3">{{shop.name}}</v-card-title>
+    <v-card-subtitle class="text-h5">{{ shop.genreCatch }}</v-card-subtitle>
+   
     <v-card-text  >
-      <div class="my-4 text-subtitle-1">
-        {{shop.ganre}}
+      <div class="text-h5">   
+    <v-icon color="red darken-2">mdi-star</v-icon>
+    {{shop.catch}}
       </div>
+      <div class="text-h5">   
+    <v-icon color="red darken-2">mdi-train</v-icon>
+    {{shop.access}}
+  </div>
+        <div class="text-h5">
+     <v-icon color="blue darken-2">mdi-weather-night</v-icon>
+     {{shop.budgetAverage}}
+  </div>
+  <div>
+    <v-chip 
+    class="text-h5"
+    v-if="card(shop.card)"
+    color="red"
+    text-color="white">
+    カード可
+    </v-chip>
+    <v-chip
+    class="text-h5"
+    v-if="card(shop.card)"
+    color="red"
+    text-color="white">
+    全席喫煙
+    </v-chip>
+    <v-chip
+    class="text-h5"
+    v-if="nonSmoking(shop.nonSmoking)"
+    color="red"
+    text-color="white">
+    個室あり
+    </v-chip>
+    <v-chip
+    class="text-h5"
+    v-if="free(shop.freeDrink)"
+    color="red"
+    text-color="white">
+    飲み放題
+    </v-chip>
+    <v-chip
+    class="text-h5"
+    v-if="free(shop.freeFood)"
+    color="red"
+    text-color="white">
+    食べ放題
+    </v-chip>
+  </div>
+</v-card-text>
+<v-divider class="mx-4"></v-divider>
 
-      <div>{{shop.address}}</div>
-      <div>{{shop.open}}</div>
-      <div>{{shop.close}}</div>
-      <div>050-5816-4600</div>
-    </v-card-text>
+<v-card-actions>
+  <v-btn
  
-    <v-divider class="mx-4"></v-divider>
-
-    <v-card-actions>
-      <v-btn
-     
-        color="deep-purple lighten-2"
-        v-bind:href="hrefUrl(shop)"
-      >
-        <v-chip>店舗URL</v-chip>
-      </v-btn
-      >
-      <v-btn
-        color="deep-purple lighten-2"
-        link nuxt href="https://www.google.com/maps/place/%E3%80%92263-0043+%E5%8D%83%E8%91%89%E7%9C%8C%E5%8D%83%E8%91%89%E5%B8%82%E7%A8%B2%E6%AF%9B%E5%8C%BA%E5%B0%8F%E4%BB%B2%E5%8F%B0%EF%BC%92%E4%B8%81%E7%9B%AE%EF%BC%96%E2%88%92%EF%BC%98+%E3%82%B6%E3%83%AC%E3%82%B8%E3%83%87%E3%83%B3%E3%82%B9%E9%98%BF%E9%83%A8/@35.6382383,140.0852509,15z/data=!3m1!4b1!4m5!3m4!1s0x6022838468dd7cab:0xd4f550249033ff70!8m2!3d35.6382386!4d140.0940057"
-      >
-        <v-chip>地図で開く</v-chip>
-      </v-btn>
-      <v-btn color="deep-purple lighten-2" ><v-chip>aaa</v-chip></v-btn>
-    </v-card-actions>
+    color="deep-purple lighten-2"
+    v-bind:href="hrefUrl(shop)"
+  >
+    <v-chip>店舗URL</v-chip>
+  </v-btn
+  >
+</v-card-actions>
+  </v-col>
+  </v-row>
   </v-card>
   <v-content>
       <div class="text-center">
@@ -83,11 +114,9 @@
       data() {
         return {
           page: 1,
-      
           lists: [],
           pageSize: 2,
           shop:[],
-          loading: false,
           selection: 1,
           keyword:'',
           shopName:'',
@@ -116,8 +145,50 @@
         },
         hrefUrl(shop){
           return shop.url
-        }
+        },
+        card(card){
+          console.log(card)
+          var flg=""
+          if(card =="利用可"){
+            console.log("true")
+          flg= Boolean("true")
+          }else{
+            console.log("false")
+            flg= Boolean("")
+          }
+          console.log(flg+"flg")
+          return flg
+        },
+        nonSmoking(nonSmoking){
+          console.log(nonSmoking)
+          var flg=""
+          if(nonSmoking =="前面喫煙"){
+            console.log("true")
+          flg= Boolean("true")
+          }else{
+            console.log("false")
+            flg= Boolean("")
+          }
+          console.log(flg+"flg")
+          return flg
+        },
+        free(free){
+          console.log(free)
+          var flg=""
+          const result = free.indexOf('あり');
+          console.log(result)
+          if(result !== -1){
+            console.log("true")
+          flg= Boolean("true")
+          }else{
+            console.log("false")
+            flg= Boolean("")
+          }
+          console.log(flg+"flg")
+          return flg
+        },
       },
+     
     
   }
   </script>

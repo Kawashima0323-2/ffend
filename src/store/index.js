@@ -3,12 +3,14 @@ import Vuex from 'vuex'
 import axios from 'axios'
 import station from './modules/station'
 import hot from './modules/hot'
+import calendar from './modules/calendar'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
     modules: {
         st: station,
         hot: hot,
+        calendar: calendar
     },
     state: {
         isLogin: false,
@@ -62,7 +64,7 @@ export default new Vuex.Store({
             }
 
         },
-        async newMember({ commit }, { userName, mailAddress, password }) {
+        async newMember({ dispatch }, { userName, mailAddress, password }) {
             const param = {
                 userName: userName,
                 mailAddress: mailAddress,
@@ -75,24 +77,16 @@ export default new Vuex.Store({
                 console.log("pass" + password);
                 console.log(loginResult);
                 console.log(loginResult.data)
-                if (loginResult.data == 'NG') {
-                    // 認証に失敗した場合
-                    console.log('認証に失敗しました。');
-                } else {
-                    // 認証に成功した場合
-                    param.userId = loginResult.data[0].userId
-                    param.userName = loginResult.data[0].userName
-                    console.log(param.userId)
-                    console.log(param.userName)
-                    commit('login', param);
-
-                }
+                await dispatch('login', {
+                    mailAddress: param.mailAddress,
+                    password: param.password,
+                })
             } catch {
                 alert('処理に失敗しました。')
             }
 
         },
-        logout({ commit }) {
+        async logout({ commit }) {
             commit('logout');
         }
     }

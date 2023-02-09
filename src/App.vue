@@ -17,7 +17,15 @@ import Footer from './components/Footer.vue'
       Header,
       Footer,
       
+    },
+    computed: {
+    userName() {
+      return this.$store.state.userName;
+    },
+    methods: {
+
     }
+  },
   }
 </script>
   

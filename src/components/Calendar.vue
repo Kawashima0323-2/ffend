@@ -153,8 +153,13 @@
       this.$refs.calendar.checkChange()
     },
     methods: {
-      viewDay ({ date }) {
+      async viewDay ({ date }) {
         this.focus = date
+        console.log(date)
+        await this.$store.dispatch("startEndDate", {
+          startDate: this.focus,
+          endDate: this.focus,
+      });
         this.$router.push("/station");
       },
       getEventColor (event) {

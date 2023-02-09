@@ -16,7 +16,6 @@ const mutations = {
     },
     genre(state, genres) {
         state.genre.push(JSON.parse(JSON.stringify(genres)));
-        console.log(state.genre)
     },
     genre0(state) {
         state.genre = [];
@@ -24,12 +23,11 @@ const mutations = {
     shopsList(state, shops) {
         state.shopsList.push(JSON.parse(JSON.stringify(shops)));
 
-        console.log(shops)
         state.length = ++state.length
-        console.log(state.length + "length")
     },
     shopsList0(state) {
         state.shopsList = [];
+        state.length = 0
     },
 };
 const actions = {
@@ -95,77 +93,72 @@ const actions = {
             genreCode: genreCode,
             cnt: 0,
         }
-        commit("genre0")
+        commit("shopsList0")
         const shops = {};
-        console.log("hot")
-        axios.get("/hotpepper/gourmet/v1/?key=0d73d0b2914349e1&format=json&middle_area=" + param.middleAreaCode + "&genre=" + param.genreCode)
+        //console.log("hot")
+        axios.get("/hotpepper/gourmet/v1/?key=0d73d0b2914349e1&format=json&count=100&middle_area=" + param.middleAreaCode + "&genre=" + param.genreCode)
             .then(function(response) {
-                console.log("hothot")
-                    /*
-                    欲しい情報リスト
-                    response.data.results.shop.forEach(shop => {
-                    console.log(shop)
-                    })
-                    shop.~で情報を取る
-
-                    店舗名
-                    shop.name = shop.name
-
-                    住所
-                    shops.address= shop.address
-
-                    店舗ロゴ
-                    shops.logo = shop.photo.pc.l
-
-                    url
-                    shops.url = shop.urls.pc
-
-                    営業時間
-                    shops.open = shop.open
-
-                    定休日
-                    shops.close = shop.close
-
-                    ジャンル
-                    shops.genre.name = shop.genre
-
-                    ジャンルキャッチ
-                    shops.genre.catch = shop.genre.catch
-
-                    キャッチ
-                    shops.catch = shop.catch
-
-                    平均ディナー予算
-                    shops.budget.average = shop.budget.average
-
-                    料金備考
-                    shops.budget_memo = shop.budget_memo
-
-                    交通アクセス
-                    shops.access = shop.access
-                    
-
-                     */
                 response.data.results.shop.forEach(shop => {
-                    console.log(shop)
                     shops.cnt = param.cnt++
                         shops.name = shop.name
-                    shops.address = shop.address
+                    shops.access = shop.mobile_access
                     shops.logo = shop.photo.pc.m
                     shops.url = shop.urls.pc
+                    shops.budget = shop.budget.average //ディナー予算
                     shops.open = shop.open
+                    shops.stationName = shop.station_name
                     shops.close = shop.close
-                    shops.genreName = shop.genre
+                    shops.genreName = shop.genre.name
                     shops.genreCatch = shop.genre.catch
                     shops.catch = shop.catch
                     shops.budgetAverage = shop.budget.average
                     shops.budgetMemo = shop.budget_memo
-                    shops.access = shop.access
+                    shops.freeDrink = shop.free_drink
+                    shops.freeFood = shop.free_food
+                    shops.card = shop.card
+                    shops.nonSmoking = shop.non_smoking
                     commit("shopsList", shops)
-
-
-
-
+                })
+            }.bind(this))
+            .catch(function(error) {
+                //エラーをキャッチした時。
+                console.log(error);
+            })
+            .finally(function() {
+                //ファイナリーです。
+            });
+    },
+    async stationEreaSearchShop({ commit }, { toStation }) {
+        const param = {
+            toStation: toStation,
+            genreCode: '',
+            cnt: 0,
+        }
+        commit("shopsList0")
+        const shops = {};
+        //console.log("hot")
+        axios.get("/hotpepper/gourmet/v1/?key=0d73d0b2914349e1&format=json&count=100&keyword=" + param.toStation)
+            .then(function(response) {
+                response.data.results.shop.forEach(shop => {
+                    shops.cnt = param.cnt++
+                        shops.name = shop.name
+                    shops.access = shop.mobile_access
+                    shops.logo = shop.photo.pc.m
+                    shops.url = shop.urls.pc
+                    shops.budget = shop.budget.average //ディナー予算
+                    shops.open = shop.open
+                    shops.stationName = shop.station_name
+                    shops.close = shop.close
+                    shops.genreName = shop.genre.name
+                    shops.genreCatch = shop.genre.catch
+                    shops.catch = shop.catch
+                    shops.budgetAverage = shop.budget.average
+                    shops.budgetMemo = shop.budget_memo
+                    shops.freeDrink = shop.free_drink
+                    shops.freeFood = shop.free_food
+                    shops.card = shop.card
+                    shops.nonSmoking = shop.non_smoking
+                    commit("shopsList", shops)
                 })
             }.bind(this))
             .catch(function(error) {

@@ -88,11 +88,11 @@ const actions = {
                 //ファイナリーです。
             });
     },
-    async searchFare({ commit }) {
+    async searchFare({ commit }, { from, to }) {
         const stationList = {
             cnt: 0,
-            from: "",
-            to: "",
+            from: from,
+            to: to,
             fare: 0,
             totalRideTime: 0,
             transferCount: 0,
@@ -119,7 +119,7 @@ const actions = {
         };
 
         //axios.get("https://api.ekispert.jp/v1/json/search/course/extreme?key=test_LJYtHBhahBd&time=1924&viaList=" + param.from + ":" + param.to)
-        axios.get("https://api.ekispert.jp/v1/json/search/course/extreme?key=test_LJYtHBhahBd&time=1924&viaList=千葉:東京")
+        axios.get("https://api.ekispert.jp/v1/json/search/course/extreme?key=test_LJYtHBhahBd&viaList=" + stationList.from + ":" + stationList.to)
             .then(function(response) {
                 //通信に成功した時の処理fdfdfss
                 commit('stationListParam')
